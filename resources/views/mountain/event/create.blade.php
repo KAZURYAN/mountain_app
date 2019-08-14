@@ -39,6 +39,17 @@
                         </div>
                     </div>
 
+                    <label class="col-md-2" for="mountain_tag">山域</label>
+
+                    @if (count($tags) > 0)
+                        <ul>
+                            @foreach($tags->all() as $t)
+                                <!-- <li>{{ $t->name }}</li> -->
+                                <input name="mountain_tag[]" type="checkbox" value="{{ $t->id }}">{{ $t->name }}
+                            @endforeach
+                        </ul>
+                    @endif
+
                     {{ csrf_field() }}
                     <input type="submit" class="btn btn-primary" value="更新">
                 </form>

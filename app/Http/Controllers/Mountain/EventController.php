@@ -7,13 +7,17 @@ use App\Http\Controllers\Controller;
 
 use Auth;
 use App\Event;
+use App\Tag;
 use Carbon\Carbon;
 
 class EventController extends Controller
 {
     public function add(){
+
+      $tags = Tag::all();
+
       //resources/view/mountain/event配下のcreate.blade.phpへと遷移させるの意味。
-      return view('mountain.event.create');
+      return view('mountain.event.create' , ['tags' => $tags]);
     }
 
     public function create(Request $request){
@@ -24,7 +28,10 @@ class EventController extends Controller
 
       $Event = new Event;
       $form = $request->all();
+      $tags = $request->input('mountain_tag');
 
+      // フォームから送信されてきたmountain_tagを削除する（Eventテーブルに山域は保存しないため）
+      unset($form['mountain_tag']);
       // フォームから送信されてきた_tokenを削除する
       unset($form['_token']);
 
@@ -32,6 +39,8 @@ class EventController extends Controller
       $Event->user_id = $id;
       $Event->fill($form);
       $Event->save();
+
+      dd($Event);
 
       //resources/view/mountain/event配下のcreate.blade.phpへと遷移させるの意味。
       return view('mountain.event.create');
