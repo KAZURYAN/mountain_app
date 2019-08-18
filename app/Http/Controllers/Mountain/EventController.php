@@ -8,7 +8,9 @@ use App\Http\Controllers\Controller;
 use Auth;
 use App\Event;
 use App\Tag;
+use App\EventTag;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class EventController extends Controller
 {
@@ -38,12 +40,33 @@ class EventController extends Controller
       //データベースへの保存を実行する.なおEvent.user_idにはログインIDをセットする。
       $Event->user_id = $id;
       $Event->fill($form);
-      $Event->save();
 
-      dd($Event);
+      DB::beginTransaction();
+      try{
+        $Event->save();
+
+        //event_tagsテーブルを更新する
+        //Event_idに対してどれだけの山域を付与したかのデータが残る。
+        $Event->tags()->sync($tags);
+
+        // $Event->tags()->attach($tags);
+        DB::commit();
+
+        //手動でDB更新を１件ずつ実行
+        // foreach ($tags as $tagId) {
+        //   $EventTag = new EventTag;
+        //   $EventTag->tag_id = $tagId;
+        //   $EventTag->event_id = $Event->id;
+        //   $EventTag->save();
+        // }
+      }catch (\Exception $e){
+        dd($e);
+        DB::rollback();
+      }
 
       //resources/view/mountain/event配下のcreate.blade.phpへと遷移させるの意味。
-      return view('mountain.event.create');
+      return redirect('/mountain/event');
+      // return view('mountain.event.create');
     }
 
     public function index(Request $request){
@@ -52,7 +75,7 @@ class EventController extends Controller
 
       if ($cond_content != ""){
         //検索されたら検索結果を取得する
-        $events = Event::where('content' , $cond_content)->get();
+        $events = Event::where('content' , 'LIKE' , "%{$cond_content}%")->get();
       }else{
         $events = Event::all();
       }
@@ -63,13 +86,16 @@ class EventController extends Controller
 
     public function edit(Request $request){
 
+      //現在チェックしているタグを取得しないといけない
+      $tags = Tag::all();
+      $check_tags = EventTag::select('tag_id')->where('event_id' , $request->id)->get();
       $event = Event::find($request->id);
 
       if(empty($event)){
         abort(404);
       }
 
-      return view('mountain.event.edit' ,['event_form' => $event]);
+      return view('mountain.event.edit' ,['event_form' => $event , 'tags' => $tags , 'check_tags' => $check_tags]);
     }
 
     public function update(Request $request){
@@ -78,9 +104,33 @@ class EventController extends Controller
        $event = Event::find($request->id);
        $event_form = $request->all();
 
+       $tags = $request->input('mountain_tag');
+       // dd($event_form);
+
+       unset($event_form['mountain_tag']);
+
        unset($event_form['_token']);
        // unset($news_form['remove']);
-       $event->fill($event_form)->save();
+
+       DB::beginTransaction();
+       try{
+         $event->fill($event_form)->save();
+         // $Event->fill($tags)->save();
+         $event->tags()->sync($tags);
+         // $Event->tags()->attach($tags);
+         DB::commit();
+
+         //手動でDB更新を１件ずつ実行
+         // foreach ($tags as $tagId) {
+         //   $EventTag = new EventTag;
+         //   $EventTag->tag_id = $tagId;
+         //   $EventTag->event_id = $Event->id;
+         //   $EventTag->save();
+         // }
+       }catch (\Exception $e){
+         dd($e);
+         DB::rollback();
+       }
 
        return redirect('mountain/event');
 

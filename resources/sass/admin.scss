@@ -38,3 +38,13 @@ body {
 .login-body {
   background-color: rgba(0, 0, 0, 0.25);
 }
+
+.container {
+
+  td.a{
+    margin: 0;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
+  }
+}

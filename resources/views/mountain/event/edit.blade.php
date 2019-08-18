@@ -39,6 +39,17 @@
                         </div>
                     </div>
 
+                    <label class="col-md-2" for="mountain_tag">山域</label>
+
+                    @if (count($tags) > 0)
+                        <ul>
+                            @foreach($tags->all() as $t)
+                              <input name="mountain_tag[]" type="checkbox" value="{{ $t->id }}" @if (is_array("$check_tags->tag_id") && in_array("$t->id" ,"$check_tags->tag_id", true)) checked="checked" @endif>{{ $t->name }}
+                              <!-- <li>{{ $t->name }}</li> -->
+                            @endforeach
+                        </ul>
+                    @endif
+
                     <div class="form-group row">
                         <div class="col-md-10">
                             <input type="hidden" name="id" value="{{ $event_form->id }}">

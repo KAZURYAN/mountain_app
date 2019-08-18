@@ -27,8 +27,8 @@ class TagController extends Controller
     $tag->fill($form);
     $tag->save();
 
-    //resources/view/mountain/tag配下のcreate.blade.phpへと遷移させるの意味。
-    return view('mountain.tag.create');
+    //山域一覧画面に遷移する
+    return redirect('mountain/tag/');
   }
 
   public function index(Request $request){

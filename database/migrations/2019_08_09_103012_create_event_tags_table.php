@@ -19,10 +19,10 @@ class CreateEventTagsTable extends Migration
             $table->bigInteger('tag_id')->unsigned();
             $table->timestamps();
 
-            $table->foreign('tag_id')
-                ->references('id')
-                ->on('tags')
-                ->onDelete('cascade');
+            // $table->foreign('tag_id')
+            //     ->references('id')
+            //     ->on('tags')
+            //     ->onDelete('cascade');
         });
     }
 

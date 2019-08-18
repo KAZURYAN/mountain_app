@@ -4,7 +4,7 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <h2>ニュース一覧</h2>
+            <h2>企画一覧</h2>
         </div>
         <div class="row">
             <div class="col-md-4">
@@ -44,9 +44,9 @@
                                 <tr>
                                     <th>{{ $event->id }}</th>
                                     <td>{{ str_limit($event->from_date, 50) }}</td>
-                                    <td>{{ str_limit($event->end_date, 50) }}</td>
-                                    <td>{{ str_limit($event->plnanner, 50) }}</td>
-                                    <td>{{ str_limit($event->content, 250) }}</td>
+                                    <td>{{ str_limit($event->to_date, 50) }}</td>
+                                    <td>{{ str_limit($event->planner, 50) }}</td>
+                                    <td class = "a">{{ str_limit($event->content, 250) }}</td>
                                     <td>
                                       <div>
                                             <a href="{{ action('Mountain\EventController@edit', ['id' => $event->id]) }}">編集</a>
