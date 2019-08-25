@@ -21,6 +21,7 @@ Route::group(['prefix' => 'mountain'], function() {
   Route::get('event' , 'Mountain\EventController@index')->middleware('auth');
   Route::get('event/edit' , 'Mountain\EventController@edit')->middleware('auth');
   Route::post('event/edit' , 'Mountain\EventController@update')->middleware('auth');
+  Route::get('event/show' , 'Mountain\EventController@show')->middleware('auth');
   Route::get('event/delete', 'Mountain\EventController@delete')->middleware('auth');
   Route::get('tag/create' , 'Mountain\TagController@add')->middleware('auth');
   Route::post('tag/create' , 'Mountain\TagController@create')->middleware('auth');

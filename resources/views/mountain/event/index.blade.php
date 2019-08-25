@@ -49,6 +49,9 @@
                                     <td class = "a">{{ str_limit($event->content, 250) }}</td>
                                     <td>
                                       <div>
+                                            <a href="{{ action('Mountain\EventController@show', ['id' => $event->id]) }}">照会</a>
+                                      </div>
+                                      <div>
                                             <a href="{{ action('Mountain\EventController@edit', ['id' => $event->id]) }}">編集</a>
                                       </div>
                                       <div>

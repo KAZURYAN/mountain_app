@@ -81,21 +81,33 @@ class EventController extends Controller
       }
 
       return view('mountain.event.index' , ['events' => $events , 'cond_content' => $cond_content]);
+    }
 
+    public function show(Request $request){
+      $tags = Tag::all();
+      $event = Event::find($request->id);
+
+      return view('mountain.event.show' , ['event' => $event, 'tags' => $tags] );
     }
 
     public function edit(Request $request){
 
-      //現在チェックしているタグを取得しないといけない
       $tags = Tag::all();
-      $check_tags = EventTag::select('tag_id')->where('event_id' , $request->id)->get();
+      // $check_tags = EventTag::select('tag_id')->where('event_id' , $request->id)->get();
+      $check_tags = EventTag::where('event_id' , $request->id)->get();
       $event = Event::find($request->id);
+
+      $chk_tags = [];
+
+      foreach ($check_tags->all() as $value) {
+        $chk_tags[] = $value->tag_id;
+      }
 
       if(empty($event)){
         abort(404);
       }
 
-      return view('mountain.event.edit' ,['event_form' => $event , 'tags' => $tags , 'check_tags' => $check_tags]);
+      return view('mountain.event.edit' ,['event' => $event , 'tags' => $tags , 'chk_tags' => $chk_tags ]);
     }
 
     public function update(Request $request){
