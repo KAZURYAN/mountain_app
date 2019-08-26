@@ -4,7 +4,7 @@
     <title>Gmaps.js テスト</title>
     <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="bower_components/gmaps/gmaps.min.js"></script>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzezqlEfLkes3BKDhdBIAOP-zXDv4Pi9U" async></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=XXXXXX" async></script>
     <script type="text/javascript">
       // コントローラから渡された住所を取得
       var addressStr = "{!! $address !!}";
