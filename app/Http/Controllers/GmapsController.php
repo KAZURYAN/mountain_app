@@ -15,7 +15,7 @@ class GmapsController extends Controller
     {
         // データーベースなどから表示したい住所を取得。
         // 本記事では「東京都庁」の住所を固定で設定する。
-        $address = "東京都新宿区西新宿２−８−１";
+        $address = "雲ノ平山荘";
 
         // 取得した住所を利用して、画面（ビュー）を作成
         return view('gmaps/view', compact('address'));

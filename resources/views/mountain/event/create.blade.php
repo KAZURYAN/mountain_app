@@ -39,6 +39,13 @@
                         </div>
                     </div>
 
+                    <div class="form-group row">
+                        <label class="col-md-2" for="content">山名（山小屋名等）</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" name="mountain_name" value="{{ old('mountain_name') }}">
+                        </div>
+                    </div>
+
                     <label class="col-md-2" for="mountain_tag">山域</label>
 
                     @if (count($tags) > 0)
@@ -53,6 +60,8 @@
                     {{ csrf_field() }}
                     <input type="submit" class="btn btn-primary" value="更新">
                 </form>
+                <br>
+                <button class="btn btn-primary"><a class="text-white" href={{action('Mountain\EventController@index')}}>戻る</a></button>
             </div>
         </div>
     </div>

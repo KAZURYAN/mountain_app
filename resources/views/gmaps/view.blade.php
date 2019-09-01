@@ -2,48 +2,46 @@
 <html>
   <head>
     <title>Gmaps.js テスト</title>
-    <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
-    <script type="text/javascript" src="bower_components/gmaps/gmaps.min.js"></script>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=XXXXXX" async></script>
+    <!-- <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="bower_components/gmaps/gmaps.min.js"></script> -->
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCfJlDc2ygNSSeISUtKeIBhIfKZrKiyAU0" async></script>
     <script type="text/javascript">
-      // コントローラから渡された住所を取得
-      var addressStr = "{!! $address !!}";
 
-      $(document).ready(function(){
-          // Gmapsを利用してマップを生成
-          var map = new GMaps({
-              div: '#map',
-              lat: -12.043333,
-              lng: -77.028333
-          });
+    function initMap() {
 
-          // 住所からマップを表示
-          GMaps.geocode({
-              address: addressStr.trim(),
-              callback: function(results, status) {
-                  if (status == 'OK') {
-                      var latlng = results[0].geometry.location;
-                      map.setCenter(latlng.lat(), latlng.lng());
-                      map.addMarker({
-                          lat: latlng.lat(),
-                          lng: latlng.lng()
-                      });
-                  }
-              }
-          });
-      });
+        var target = document.getElementById('map'); //マップを表示する要素を指定
+        var address = "{!! $address !!}"; //住所を指定
+        var geocoder = new google.maps.Geocoder();
+
+        geocoder.geocode({ address: address }, function(results, status){
+          if (status === 'OK' && results[0]){
+
+            console.log(results[0].geometry.location);
+
+             var map = new google.maps.Map(target, {
+               center: results[0].geometry.location,
+               zoom: 15
+             });
+
+             var marker = new google.maps.Marker({
+               position: results[0].geometry.location,
+               map: map,
+               animation: google.maps.Animation.DROP
+             });
+
+          }else{
+            //住所が存在しない場合の処理
+            alert('住所が正しくないか存在しません。');
+            target.style.display='none';
+          }
+        });
+      }
     </script>
 
-    <style>
-      @charset "utf-8";
-      #map {
-        height: 400px;
-      }
-    </style>
   </head>
-  <body>
+  <body  onload="initMap()">
     <h1>Gmaps.js テスト</h1>
     <p>住所：{{ $address }}</p>
-    <div id="map"></div>
+    <div id="map" style="width: 600px; height: 500px;"></div>
   </body>
 </html>

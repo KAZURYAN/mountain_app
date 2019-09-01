@@ -39,22 +39,41 @@
                         </div>
                     </div>
 
-                    <label class="col-md-2" for="mountain_tag">山域</label>
-
-                    @if (count($tags) > 0)
-                        <ul>
-                            @foreach($tags->all() as $t)
-                              <input name="mountain_tag[]" type="checkbox" value="{{ $t->id }}" @if (is_array($chk_tags) && in_array($t->id ,$chk_tags, true)) checked="checked" @endif>{{ $t->name }}
-                              <!-- <li>{{ $t->name }}</li> -->
-                            @endforeach
-                        </ul>
-                    @endif
+                    <div class="form-group row">
+                        <label class="col-md-2" for="mountain_name">山名（山小屋名等）</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" name="mountain_name" value="{{ $event->mountain_name }}">
+                        </div>
+                    </div>
 
                     <div class="form-group row">
+                    <label class="col-md-2" for="mountain_tag">山域</label>
+
+                      <div class="checkbox">
                         <div class="col-md-10">
+                        @if (count($tags) > 0)
+                            <ul>
+                                @foreach($tags->all() as $t)
+                                  <input name="mountain_tag[]" type="checkbox" value="{{ $t->id }}" @if (is_array($chk_tags) && in_array($t->id ,$chk_tags, true)) checked="checked" @endif>{{ $t->name }}
+                                  <!-- <li>{{ $t->name }}</li> -->
+                                @endforeach
+                            </ul>
+                        @endif
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-12">
                             <input type="hidden" name="id" value="{{ $event->id }}">
                             {{ csrf_field() }}
                             <input type="submit" class="btn btn-primary" value="更新">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                          <button class="btn btn-primary"><a class="text-white" href={{action('Mountain\EventController@index')}}>戻る</a></button>
                         </div>
                     </div>
                 </form>

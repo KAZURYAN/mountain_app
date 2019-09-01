@@ -74,7 +74,7 @@ class EventController extends Controller
       $cond_content = $request->cond_content;
 
       if ($cond_content != ""){
-        //検索されたら検索結果を取得する
+        //検索されたら検索結果を取得する（あいまい検索）
         $events = Event::where('content' , 'LIKE' , "%{$cond_content}%")->get();
       }else{
         $events = Event::all();
@@ -87,18 +87,29 @@ class EventController extends Controller
       $tags = Tag::all();
       $event = Event::find($request->id);
 
-      return view('mountain.event.show' , ['event' => $event, 'tags' => $tags] );
+      //チェックされているタグ名のみを取得
+      foreach ($event->tags as $tag) {
+        $tag_names[] = $tag->name;
+      }
+
+      return view('mountain.event.show' , ['event' => $event, 'tags' => $tags , 'tag_names'  => $tag_names] );
     }
 
     public function edit(Request $request){
 
+      //全てのタグを取得
       $tags = Tag::all();
-      // $check_tags = EventTag::select('tag_id')->where('event_id' , $request->id)->get();
+
+      //チェックされているタグを、イベントidを条件に取得する
       $check_tags = EventTag::where('event_id' , $request->id)->get();
+
+      //企画を取得する
       $event = Event::find($request->id);
 
       $chk_tags = [];
 
+      //タグidを配列に書くのする。
+      //チェックされているタグを、blade側でデフォルトでチェック付与するために、タグidを配列に格納
       foreach ($check_tags->all() as $value) {
         $chk_tags[] = $value->tag_id;
       }
@@ -112,13 +123,19 @@ class EventController extends Controller
 
     public function update(Request $request){
 
+       //バリデーションチェックの実施
        $this->validate($request , Event::$rules);
+
+       //更新するイベントを特定する
        $event = Event::find($request->id);
+
+       //edit画面で登録したフォームデータを全て格納
        $event_form = $request->all();
 
+       //フォームデータの内、mountain_tagのみ取得して格納する
        $tags = $request->input('mountain_tag');
-       // dd($event_form);
 
+       //$event_formにはmountain_tag属性が不要のため削除（テーブルに該当項目がないため）
        unset($event_form['mountain_tag']);
 
        unset($event_form['_token']);
@@ -150,9 +167,15 @@ class EventController extends Controller
 
     public function delete(Request $request){
 
+      //削除する企画を取得
       $event = Event::find($request->id);
 
+      //削除する企画に紐づいて登録されているタグの削除を行うために、企画に登録されているタグを特定
+      $event_tag = EventTag::where('event_id','=',$event->id);
+
+      //削除実行
       $event->delete();
+      $event_tag->delete();
 
       return redirect('mountain/event/');
 
