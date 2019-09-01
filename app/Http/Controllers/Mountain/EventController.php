@@ -29,6 +29,8 @@ class EventController extends Controller
       $id = Auth::id();
 
       $Event = new Event;
+
+      //フォーム情報を取得
       $form = $request->all();
       $tags = $request->input('mountain_tag');
 
