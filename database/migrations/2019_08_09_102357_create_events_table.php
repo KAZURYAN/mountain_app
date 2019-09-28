@@ -20,6 +20,7 @@ class CreateEventsTable extends Migration
             $table->date('to_date');
             $table->string('planner');
             $table->text('content');
+            $table->String('mountain_name');
             $table->timestamps();
         });
     }

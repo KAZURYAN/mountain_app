@@ -46,16 +46,29 @@
                         </div>
                     </div>
 
-                    <label class="col-md-2" for="mountain_tag">山域</label>
+                    <div class="form-group row">
+                        <label class="col-md-2" for="mountain_tag">山域</label>
 
-                    @if (count($tags) > 0)
-                        <ul>
-                            @foreach($tags->all() as $t)
-                                <!-- <li>{{ $t->name }}</li> -->
-                                <input name="mountain_tag[]" type="checkbox" value="{{ $t->id }}">{{ $t->name }}
-                            @endforeach
-                        </ul>
-                    @endif
+                        @if (count($tags) > 0)
+                            <ul>
+                                @foreach($tags->all() as $t)
+                                    <!-- <li>{{ $t->name }}</li> -->
+                                    <input name="mountain_tag[]" type="checkbox" value="{{ $t->id }}">{{ $t->name }}
+                                @endforeach
+                            </ul>
+                        @endif
+                    </div>
+
+                    <div class="form-group row">
+                      <label class="col-md-2" for="mountain_tag">参加者</label>
+                        <div id="input_pluralBox" class="col-md-10">
+                            <div id="input_plural">
+                                <input class="search_name" name ="participant[]" type="text" class="form-control" placeholder="参加者を入力">
+                                <input type="button" value="＋" class="add pluralBtn">
+                                <input type="button" value="－" class="del pluralBtn">
+                            </div>
+                        </div>
+                    </div>
 
                     {{ csrf_field() }}
                     <input type="submit" class="btn btn-primary" value="更新">
@@ -66,3 +79,6 @@
         </div>
     </div>
 @endsection
+
+@include('common.autochangeform')
+@include('common.autocomplete_member')

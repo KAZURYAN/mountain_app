@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 
 use Auth;
 use App\Event;
+use App\Member;
 use App\Tag;
 use App\EventTag;
 use Carbon\Carbon;
@@ -74,20 +75,51 @@ class EventController extends Controller
     public function index(Request $request){
 
       $cond_content = $request->cond_content;
+      $cond_planner = $request->cond_planner;
 
-      if ($cond_content != ""){
-        //検索されたら検索結果を取得する（あいまい検索）
+      if ($cond_content != "" && $cond_planner != ""){
+        $events = Event::where('content' , 'LIKE' , "%{$cond_content}%")->where('planner' , 'LIKE' , "%{$cond_planner}%")->get();
+
+      }elseif ($cond_content != "" && $cond_planner == ""){
         $events = Event::where('content' , 'LIKE' , "%{$cond_content}%")->get();
-      }else{
+
+      }elseif ($cond_content == "" && $cond_planner != ""){
+        $events = Event::where('planner' , 'LIKE' , "%{$cond_planner}%")->get();
+
+      }else {
         $events = Event::all();
       }
 
-      return view('mountain.event.index' , ['events' => $events , 'cond_content' => $cond_content]);
+      return view('mountain.event.index' , ['events' => $events , 'cond_content' => $cond_content ,'cond_planner' => $cond_planner]);
+    }
+
+    public function search(Request $request)
+    {
+          $search = $request->get('term');
+
+          $result = Event::where('planner', 'LIKE', '%'. $search. '%')->distinct()->select('planner')->get();
+
+          return response()->json($result);
+
+    }
+
+    //企画に参加したメンバーを登録するための、オートコンプリート用アクション
+    public function search_member(Request $request)
+    {
+          $search_member = $request->get('term');
+
+          $result = Member::where('name', 'LIKE', '%'. $search_member. '%')->distinct()->select('name')->get();
+
+          return response()->json($result);
+
     }
 
     public function show(Request $request){
       $tags = Tag::all();
       $event = Event::find($request->id);
+
+      //空配列を宣言。企画に登録されているタグを取得。なお空宣言しておくことで、blade側でタグの領域がブランク表示となるようにしておく。
+      $tag_names = [];
 
       //チェックされているタグ名のみを取得
       foreach ($event->tags as $tag) {
