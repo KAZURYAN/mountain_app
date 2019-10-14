@@ -19,8 +19,13 @@ class Event extends Model
       return $this->belongsTo('App\User');
   }
 
-  public function tags(){
-      return $this->belongsToMany('App\Tag','event_tags')
-      ->withTimestamps();
-  }
+    public function tags(){
+        return $this->belongsToMany('App\Tag','event_tags')
+        ->withTimestamps();
+    }
+
+    public function members(){
+        return $this->belongsToMany('App\Member','event_members')
+        ->withTimestamps();
+    }
 }

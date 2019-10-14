@@ -64,6 +64,26 @@
                     </div>
 
                     <div class="form-group row">
+                    <label class="col-md-2" for="mountain_tag">参加者</label>
+
+                        <div class="col-md-10">
+                          @if (count($members) > 0)
+
+                              @foreach($members as $m)
+                                <div id="input_pluralBox">
+                                    <div id="input_plural">
+                                      <input name="participant[]" type="text" class="form-control" value="{{ $m }}" >
+                                      <input type="button" value="＋" class="add pluralBtn">
+                                      <input type="button" value="－" class="del pluralBtn">
+                                    </div>
+                                </div>
+                              @endforeach
+
+                          @endif
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <input type="hidden" name="id" value="{{ $event->id }}">
                             {{ csrf_field() }}
@@ -81,3 +101,6 @@
         </div>
     </div>
 @endsection
+
+@include('common.autochangeform')
+@include('common.autocomplete_member')

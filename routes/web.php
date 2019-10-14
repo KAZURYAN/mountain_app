@@ -27,9 +27,9 @@ Route::group(['prefix' => 'mountain'], function() {
   Route::get('/event/autocomplete' , 'Mountain\EventController@search')->middleware('auth')->name('event.autocomplete');
   /* index画面で企画者名をオートコンプリートで検索させるために追加 20190923 end */
 
-  /* index画面で企画者名をオートコンプリートで検索させるために追加 20190923 start */
-  Route::get('/event/create/autocompletemember' , 'Mountain\EventController@search_member')->middleware('auth')->name('event.autocompletemember');
-  /* index画面で企画者名をオートコンプリートで検索させるために追加 20190923 end */
+  /* index画面で参加者をオートコンプリートで検索させるために追加 20190923 start */
+  // Route::get('/event/create/autocompletemember' , 'Mountain\EventController@search_member')->middleware('auth')->name('event.autocompletemember');
+  /* index画面で参加者名をオートコンプリートで検索させるために追加 20190923 end */
   Route::get('tag/create' , 'Mountain\TagController@add')->middleware('auth');
   Route::post('tag/create' , 'Mountain\TagController@create')->middleware('auth');
   Route::get('tag' , 'Mountain\TagController@index')->middleware('auth');

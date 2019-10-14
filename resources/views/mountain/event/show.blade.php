@@ -59,19 +59,34 @@
                       </div>
                     </div>
 
-                  <div class="form-group row">
-                    <label class="col-md-2" for="mountain_tag">地図</label>
+                    <div class="form-group row">
+                    <label class="col-md-2" for="mountain_tag">参加者</label>
 
-                    <div class="col-md-10">
-                      <div id="map" style="width: 600px; height: 500px;"></div>
+                      <div class="col-md-10">
+                        @if (count($members) > 0)
+                            <ul>
+                                @foreach($members as $m)
+                                  <a class="btn btn-primary" href="#" role="button" style="pointer-events: none;">{{$m}}</a>
+                                  <!-- <input name="mountain_tag[]" type="hidden"  readonly>{{ $t }} -->
+                                @endforeach
+                            </ul>
+                        @endif
+                      </div>
                     </div>
-                  </div>
 
-                  <div class="form-group row">
-                    <div class="col-md-12">
-                      <button class="btn btn-primary"><a class="text-white" href={{action('Mountain\EventController@index')}}>戻る</a></button>
+                    <div class="form-group row">
+                      <label class="col-md-2" for="mountain_tag">地図</label>
+
+                      <div class="col-md-10">
+                        <div id="map" style="width: 600px; height: 500px;"></div>
+                      </div>
                     </div>
-                  </div>
+
+                    <div class="form-group row">
+                      <div class="col-md-12">
+                        <button class="btn btn-primary"><a class="text-white" href={{action('Mountain\EventController@index')}}>戻る</a></button>
+                      </div>
+                    </div>
             </div>
         </div>
     </div>

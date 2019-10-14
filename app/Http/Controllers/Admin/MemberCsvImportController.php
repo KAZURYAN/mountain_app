@@ -20,7 +20,7 @@ class MemberCsvImportController extends Controller
     public function upload(Request $request){
 
       $file = $request->file('csv_file');
-      Member::truncate();
+      // Member::truncate();
       Excel::import(new MembersImport, $file);
 
     }
