@@ -1,9 +1,12 @@
 $(document).on("click", ".add", function() {
-    $(this).parent().clone(true).insertAfter($(this).parent());
+    var memberForm = $(this).parent();
+    var cloneMemberForm =  memberForm.clone(true);
+    cloneMemberForm.find("input.search_name").val("");
+    cloneMemberForm.insertAfter(memberForm);
 });
 $(document).on("click", ".del", function() {
-    var target = $(this).parent();
-    if (target.parent().children().length > 1) {
-        target.remove();
+    var memberForm = $(this).parent();
+    if (memberForm.parent().children().length > 1) {
+        memberForm.remove();
     }
 });

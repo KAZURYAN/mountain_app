@@ -67,7 +67,7 @@
                             <ul>
                                 @foreach($members as $m)
                                   <a class="btn btn-primary" href="#" role="button" style="pointer-events: none;">{{$m}}</a>
-                                  <!-- <input name="mountain_tag[]" type="hidden"  readonly>{{ $t }} -->
+
                                 @endforeach
                             </ul>
                         @endif
